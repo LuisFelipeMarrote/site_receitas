@@ -11,7 +11,6 @@ app.use(express.json());
 
 app.post("/login", async (req, res) => {
     const dado = req.body;
-    console.log("chegou")
     const corpo = await bd.selectUsuario(dado);
     if (corpo != null){
         res.set('Content-Type', 'application/json');
@@ -50,6 +49,34 @@ app.post("/update", async (req, res) => {
         res.status(204);
         res.send(JSON.stringify("Atualização cadastral falhou"));
     }
+})
+
+app.post("/receita/cadastro", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.insertReceita(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+
+})
+
+app.post("/receita/update", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.updateReceita(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+
 })
 
 app.use(cors({
