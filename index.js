@@ -40,7 +40,7 @@ app.post("/cadastro", async (req, res) => {
 
 app.post("/update", async (req, res) => {
     const dado = req.body;
-    const corpo = await bd.insertUsuario(dado);
+    const corpo = await bd.updateUsuario(dado);
     if (corpo != null){
         res.set('Content-Type', 'application/json');
         res.status(200).send();

@@ -29,7 +29,7 @@ async function updateUsuario (dado){
         return;
     }
 }
-(a)
+
 
 module.exports = {
     selectUsuario,
