@@ -48,7 +48,7 @@ app.post("/update", async (req, res) => {
     else{   
         res.set('Content-Type', 'application/json');
         res.status(204);
-        res.send(JSON.stringify("Cadastro falhou"));
+        res.send(JSON.stringify("Atualização cadastral falhou"));
     }
 })
 
