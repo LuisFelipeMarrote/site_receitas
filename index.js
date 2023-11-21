@@ -20,7 +20,6 @@ app.post("/login", async (req, res) => {
         res.set('Content-Type', 'application/json');
         res.status(204).send();        
     }    
-
 })
 
 app.post("/cadastro", async (req, res) => {
@@ -62,7 +61,6 @@ app.post("/receita/cadastro", async (req, res) => {
         res.set('Content-Type', 'application/json');
         res.status(204).send();        
     }    
-
 })
 
 app.post("/receita/update", async (req, res) => {
@@ -76,7 +74,85 @@ app.post("/receita/update", async (req, res) => {
         res.set('Content-Type', 'application/json');
         res.status(204).send();        
     }    
+})
 
+app.get("/receita/read", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.selectReceita(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
+app.post("/receita/delete", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.deleteReceita(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
+app.get("/receita/read/all", async (res) => {
+    const corpo = await bd.selectAllReceita();
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
+app.post("/avaliacao/cadastro", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.insertAvaliacao(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
+app.post("/avaliacao/read", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.selectAvaliacao(dado);
+    console.log(corpo)
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
+app.post("/filtro/read", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.selectFiltro(dado);
+    console.log(corpo)
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
 })
 
 app.use(cors({

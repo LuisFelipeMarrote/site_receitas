@@ -62,10 +62,87 @@ async function updateReceita (dado){
     }
 }
 
+async function selectReceita (dado){
+    const params = [dado.id]
+    try{
+        const result = await conexao.query("SELECT * from receitas WHERE id=?;", params);
+        return result[0][0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
+async function deleteReceita (dado){
+    const params = [dado.id]
+    try{
+        const result = await conexao.query("DELETE from receitas WHERE id=?;", params);
+        return result[0][0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
+async function selectAllReceita (){
+    try{
+        const result = await conexao.query("SELECT * from receitas;");
+        return result[0][0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
+async function insertAvaliacao (dado){
+    const params = [dado.id_usuario, dado.id_receita, dado.nota]
+    try{
+        const result = await conexao.query("INSERT INTO avaliacao (id_usuario, id_receita, nota) VALUES (?, ?, ?);", params);   
+        return result[0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
+async function selectAvaliacao (dado){
+    const params = [dado.id_receita]
+    try{
+        const result = await conexao.query("SELECT AVG(nota) from avaliacao GROUP BY id_receita having id_receita = ? ;", params);
+        return result[0][0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
+async function selectFiltro (dado){
+    const params = [dado.nota]
+    try{
+        const result = await conexao.query("SELECT * from receitas WHERE LOWER(titulo) LIKE '%" + dado.string + "%' and id_receitas IN (SELECT id_receita from avaliacao GROUP BY id_receita having AVG(nota) >= ?);", params);
+        return result[0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
 module.exports = {
     selectUsuario,
     insertUsuario,
     updateUsuario,
     insertReceita,
-    updateReceita
+    updateReceita,
+    selectReceita,
+    deleteReceita,
+    selectAllReceita,
+    insertAvaliacao,
+    selectAvaliacao,
+    selectFiltro
 }
