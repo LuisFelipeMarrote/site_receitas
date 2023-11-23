@@ -77,6 +77,9 @@ async function selectReceita (dado){
 async function deleteReceita (dado){
     const params = [dado.id]
     try{
+        await conexao.query("DELETE from avaliacao WHERE id=?;", params);
+        await conexao.query("DELETE from curtidas WHERE id=?;", params);
+        await conexao.query("DELETE from comentarios WHERE id=?;", params);
         const result = await conexao.query("DELETE from receitas WHERE id=?;", params);
         return result[0][0];
     }
@@ -89,7 +92,7 @@ async function deleteReceita (dado){
 async function selectAllReceita (){
     try{
         const result = await conexao.query("SELECT * from receitas;");
-        return result[0][0];
+        return result[0];
     }
     catch(e){
         console.log(e)

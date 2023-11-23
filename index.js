@@ -102,7 +102,7 @@ app.post("/receita/delete", async (req, res) => {
     }    
 })
 
-app.get("/receita/read/all", async (res) => {
+app.post("/receita/read/all", async (req, res) => {
     const corpo = await bd.selectAllReceita();
     if (corpo != null){
         res.set('Content-Type', 'application/json');
@@ -141,6 +141,7 @@ app.post("/avaliacao/read", async (req, res) => {
     }    
 })
 
+///mandar 'string' e 'nota'
 app.post("/filtro/read", async (req, res) => {
     const dado = req.body;
     const corpo = await bd.selectFiltro(dado);
