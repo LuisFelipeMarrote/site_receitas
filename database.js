@@ -75,13 +75,13 @@ async function selectReceita (dado){
 }
 
 async function deleteReceita (dado){
-    const params = [dado.id]
+    const params = [dado.id_receitas]
     try{
-        await conexao.query("DELETE from avaliacao WHERE id=?;", params);
-        await conexao.query("DELETE from curtidas WHERE id=?;", params);
-        await conexao.query("DELETE from comentarios WHERE id=?;", params);
-        const result = await conexao.query("DELETE from receitas WHERE id=?;", params);
-        return result[0][0];
+        await conexao.query("DELETE from avaliacao WHERE id_receita=?;", params); // mudar para receitas né
+        await conexao.query("DELETE from curtidas WHERE id_receitas=?;", params);
+        await conexao.query("DELETE from comentarios WHERE id_receitas=?;", params);
+        const result = await conexao.query("DELETE from receitas WHERE id_receitas=?;", params);
+        return result[0];
     }
     catch(e){
         console.log(e)
