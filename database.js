@@ -163,7 +163,38 @@ async function selectFiltro (dado){
 async function insertCurtida (dado){
     const params = [dado.id_usuario, dado.id_receitas]
     try{
-        const result = await conexao.query("INSERT INTO curtidas (id_usuario, id_receitas) VALUES (?, ?);", params);   
+        const result = await conexao.query("SELECT * from curtidas WHERE id_usuario=? and id_receitas=?;", params);
+        if(result[0][0] != null){
+            const result2 = await conexao.query("DELETE from curtidas WHERE id_usuario=? and id_receitas=?;", params);       
+            return result2[0];
+        }
+        else{
+            const result2 = await conexao.query("INSERT INTO curtidas (id_usuario, id_receitas) VALUES (?, ?);", params);          
+            return result2[0];
+        }
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
+async function selectCurtida (dado){
+    const params = [dado.id_usuario, dado.id_receitas]
+    try{
+        const result = await conexao.query("SELECT * from curtidas WHERE id_usuario=? and id_receitas=?;", params);
+        return result[0][0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
+async function selectAllCurtida (dado){
+    const params = [dado.id_usuario]
+    try{
+        const result = await conexao.query("SELECT * from curtidas WHERE id_usuario=?;", params);
         return result[0];
     }
     catch(e){
@@ -172,11 +203,22 @@ async function insertCurtida (dado){
     }
 }
 
-
-async function selectAllCurtida (dado){
-    const params = [dado.id_usuario]
+async function insertComentario (dado){
+    const params = [dado.id_usuario, dado.id_receitas, dado.texto]
     try{
-        const result = await conexao.query("SELECT * from curtidas WHERE id_usuario=?;", params);
+        const result = await conexao.query("INSERT INTO comentarios (id_usuario, id_receitas, texto) VALUES (?, ?, ?);", params);   
+        return result[0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
+async function selectAllComentario (dado){
+    const params = [dado.id_receitas]
+    try{
+        const result = await conexao.query("SELECT * from comentarios WHERE id_receitas=?;", params);
         return result[0];
     }
     catch(e){
@@ -200,5 +242,8 @@ module.exports = {
     selectAvaliacaoUsuario,
     selectFiltro,
     insertCurtida,
-    selectAllCurtida
+    selectCurtida,
+    selectAllCurtida,
+    insertComentario,
+    selectAllComentario
 }

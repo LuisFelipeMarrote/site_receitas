@@ -198,6 +198,19 @@ app.post("/curtida/cadastro", async (req, res) => {
 
 app.get("/curtida/read", async (req, res) => {
     const dado = req.body;
+    const corpo = await bd.selectCurtida(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
+app.get("/curtida/read/all", async (req, res) => {
+    const dado = req.body;
     const corpo = await bd.selectAllCurtida(dado);
     if (corpo != null){
         res.set('Content-Type', 'application/json');
@@ -209,6 +222,31 @@ app.get("/curtida/read", async (req, res) => {
     }    
 })
 
+app.post("/comentario/cadastro", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.insertComentario(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
+app.get("/comentario/read", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.selectAllComentario(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
 
 app.use(cors({
     origin: ['http://localhost:8000']
