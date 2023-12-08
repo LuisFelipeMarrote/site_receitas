@@ -91,7 +91,7 @@ app.get("/receita/read", async (req, res) => {
 
 app.get("/receita/usuario/read", async (req, res) => {
     const dado = req.body;
-    const corpo = await bd.selectReceitaUsuario(dado);
+    const corpo = await bd.selectAllReceitaUsuario(dado);
     if (corpo != null){
         res.set('Content-Type', 'application/json');
         res.send(corpo).status(200);  
@@ -154,6 +154,20 @@ app.post("/avaliacao/read", async (req, res) => {
     }    
 })
 
+app.post("/avaliacao/usuario/read", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.selectAvaliacaoUsuario(dado);
+    console.log(corpo)
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
 ///mandar 'string' e 'nota'
 app.post("/filtro/read", async (req, res) => {
     const dado = req.body;
@@ -168,6 +182,33 @@ app.post("/filtro/read", async (req, res) => {
         res.status(204).send();        
     }    
 })
+
+app.post("/curtida/cadastro", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.insertCurtida(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
+app.get("/curtida/read", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.selectAllCurtida(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
 
 app.use(cors({
     origin: ['http://localhost:8000']
