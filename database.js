@@ -74,6 +74,18 @@ async function selectReceita (dado){
     }
 }
 
+async function selectReceitaUsuario (dado){
+    const params = [dado.id_usuarui]
+    try{
+        const result = await conexao.query("SELECT * from receitas WHERE id_usuario=?;", params);
+        return result[0][0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
 async function deleteReceita (dado){
     const params = [dado.id_receitas]
     try{
@@ -143,6 +155,7 @@ module.exports = {
     insertReceita,
     updateReceita,
     selectReceita,
+    selectReceitaUsuario,
     deleteReceita,
     selectAllReceita,
     insertAvaliacao,

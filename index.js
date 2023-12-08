@@ -89,6 +89,19 @@ app.get("/receita/read", async (req, res) => {
     }    
 })
 
+app.get("/receita/usuario/read", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.selectReceitaUsuario(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
 app.post("/receita/delete", async (req, res) => {
     const dado = req.body;
     const corpo = await bd.deleteReceita(dado);
