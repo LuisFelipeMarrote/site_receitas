@@ -76,9 +76,9 @@ app.post("/receita/update", async (req, res) => {
     }    
 })
 
-app.get("/receita/read", async (req, res) => {
-    const dado = req.body;
-    const corpo = await bd.selectReceita(dado);
+app.get("/receita/read/:id_receitas", async (req, res) => {
+    const id_receitas = req.params.id_receitas;
+    const corpo = await bd.selectReceita(id_receitas);
     if (corpo != null){
         res.set('Content-Type', 'application/json');
         res.send(corpo).status(200);  
@@ -89,9 +89,9 @@ app.get("/receita/read", async (req, res) => {
     }    
 })
 
-app.get("/receita/usuario/read", async (req, res) => {
-    const dado = req.body;
-    const corpo = await bd.selectAllReceitaUsuario(dado);
+app.get("/receita/usuario/read/:id_usuario", async (req, res) => {
+    const id_usuario = req.params.id_usuario;
+    const corpo = await bd.selectAllReceitaUsuario(id_usuario);
     if (corpo != null){
         res.set('Content-Type', 'application/json');
         res.send(corpo).status(200);  
@@ -196,9 +196,10 @@ app.post("/curtida/cadastro", async (req, res) => {
     }    
 })
 
-app.get("/curtida/read", async (req, res) => {
-    const dado = req.body;
-    const corpo = await bd.selectCurtida(dado);
+app.get("/curtida/read/:id_usuario/:id_receitas", async (req, res) => {
+    const id_usuario = req.params.id_usuario;
+    const id_receitas = req.params.id_receitas;
+    const corpo = await bd.selectCurtida(id_usuario, id_receitas);
     if (corpo != null){
         res.set('Content-Type', 'application/json');
         res.send(corpo).status(200);  
@@ -209,9 +210,9 @@ app.get("/curtida/read", async (req, res) => {
     }    
 })
 
-app.get("/curtida/read/all", async (req, res) => {
-    const dado = req.body;
-    const corpo = await bd.selectAllCurtida(dado);
+app.get("/curtida/all/read/:id_usuario", async (req, res) => {
+    const id_usuario = req.params.id_usuario;
+    const corpo = await bd.selectAllCurtida(id_usuario);
     if (corpo != null){
         res.set('Content-Type', 'application/json');
         res.send(corpo).status(200);  
@@ -235,9 +236,9 @@ app.post("/comentario/cadastro", async (req, res) => {
     }    
 })
 
-app.get("/comentario/read", async (req, res) => {
-    const dado = req.body;
-    const corpo = await bd.selectAllComentario(dado);
+app.get("/comentario/read/:id_receitas", async (req, res) => {
+    const id_receitas = req.params.id_receitas;
+    const corpo = await bd.selectAllComentario(id_receitas);
     if (corpo != null){
         res.set('Content-Type', 'application/json');
         res.send(corpo).status(200);  

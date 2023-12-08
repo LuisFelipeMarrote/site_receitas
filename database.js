@@ -62,10 +62,10 @@ async function updateReceita (dado){
     }
 }
 
-async function selectReceita (dado){
-    const params = [dado.id]
+async function selectReceita (id_receitas){
+    const params = [id_receitas]
     try{
-        const result = await conexao.query("SELECT * from receitas WHERE id=?;", params);
+        const result = await conexao.query("SELECT * from receitas WHERE id_receitas=?;", params);
         return result[0][0];
     }
     catch(e){
@@ -74,8 +74,8 @@ async function selectReceita (dado){
     }
 }
 
-async function selectAllReceitaUsuario (dado){
-    const params = [dado.id_usuario]
+async function selectAllReceitaUsuario (id_usuario){
+    const params = [id_usuario]
     try{
         const result = await conexao.query("SELECT * from receitas WHERE id_usuario=?;", params);
         return result[0];
@@ -89,7 +89,7 @@ async function selectAllReceitaUsuario (dado){
 async function deleteReceita (dado){
     const params = [dado.id_receitas]
     try{
-        await conexao.query("DELETE from avaliacao WHERE id_receita=?;", params); // mudar para receitas né
+        await conexao.query("DELETE from avaliacao WHERE id_receitas=?;", params); // mudar para receitas né
         await conexao.query("DELETE from curtidas WHERE id_receitas=?;", params);
         await conexao.query("DELETE from comentarios WHERE id_receitas=?;", params);
         const result = await conexao.query("DELETE from receitas WHERE id_receitas=?;", params);
@@ -127,7 +127,7 @@ async function insertAvaliacao (dado){
 async function selectAvaliacao (dado){
     const params = [dado.id_receitas]
     try{
-        const result = await conexao.query("SELECT AVG(nota) from avaliacao GROUP BY id_receita having id_receitas = ? ;", params);
+        const result = await conexao.query("SELECT AVG(nota) from avaliacao GROUP BY id_receitas having id_receitas = ? ;", params);
         return result[0][0];
     }
     catch(e){
@@ -139,7 +139,7 @@ async function selectAvaliacao (dado){
 async function selectAvaliacaoUsuario (dado){
     const params = [dado.id_receitas, id_receitas]
     try{
-        const result = await conexao.query("SELECT nota from avaliacao WHERE id_receita=? and id_usuario=? ;", params);
+        const result = await conexao.query("SELECT nota from avaliacao WHERE id_receitas=? and id_usuario=? ;", params);
         return result[0][0];
     }
     catch(e){
@@ -151,7 +151,7 @@ async function selectAvaliacaoUsuario (dado){
 async function selectFiltro (dado){
     const params = [dado.nota]
     try{
-        const result = await conexao.query("SELECT * from receitas WHERE LOWER(titulo) LIKE '%" + dado.string + "%' and id_receitas IN (SELECT id_receita from avaliacao GROUP BY id_receita having AVG(nota) >= ?);", params);
+        const result = await conexao.query("SELECT * from receitas WHERE LOWER(titulo) LIKE '%" + dado.string + "%' and id_receitas NOT IN (SELECT id_receitas from avaliacao GROUP BY id_receitas having AVG(nota) < ?);", params);
         return result[0];
     }
     catch(e){
@@ -162,6 +162,7 @@ async function selectFiltro (dado){
 
 async function insertCurtida (dado){
     const params = [dado.id_usuario, dado.id_receitas]
+    console.log(params);
     try{
         const result = await conexao.query("SELECT * from curtidas WHERE id_usuario=? and id_receitas=?;", params);
         if(result[0][0] != null){
@@ -179,8 +180,8 @@ async function insertCurtida (dado){
     }
 }
 
-async function selectCurtida (dado){
-    const params = [dado.id_usuario, dado.id_receitas]
+async function selectCurtida (id_usuario, id_receitas){
+    const params = [id_usuario, id_receitas]
     try{
         const result = await conexao.query("SELECT * from curtidas WHERE id_usuario=? and id_receitas=?;", params);
         return result[0][0];
@@ -191,8 +192,8 @@ async function selectCurtida (dado){
     }
 }
 
-async function selectAllCurtida (dado){
-    const params = [dado.id_usuario]
+async function selectAllCurtida (id_usuario){
+    const params = [id_usuario]
     try{
         const result = await conexao.query("SELECT * from curtidas WHERE id_usuario=?;", params);
         return result[0];
@@ -215,8 +216,8 @@ async function insertComentario (dado){
     }
 }
 
-async function selectAllComentario (dado){
-    const params = [dado.id_receitas]
+async function selectAllComentario (id_receitas){
+    const params = [id_receitas]
     try{
         const result = await conexao.query("SELECT * from comentarios WHERE id_receitas=?;", params);
         return result[0];
