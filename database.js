@@ -39,9 +39,9 @@ async function updateUsuario (dado){
 }
 
 async function insertReceita (dado){
-    const params = [dado.titulo_receitas, dado.descricao, dado.requisitos, dado.preparo]
+    const params = [dado.id_usuario, dado.titulo_receitas, dado.descricao, dado.requisitos, dado.preparo]
     try{
-        const result = await conexao.query("INSERT INTO receitas (titulo, descricao, requisitos, preparo) VALUES (?, ?, ?, ?);", params);   
+        const result = await conexao.query("INSERT INTO receitas (id_usuario, titulo, descricao, requisitos, preparo) VALUES (?, ?, ?, ?, ?);", params);   
         return result[0];
     }
     catch(e){
@@ -51,9 +51,9 @@ async function insertReceita (dado){
 }
 
 async function updateReceita (dado){
-    const params = [dado.titulo_receitas, dado.descricao, dado.requisitos, dado.preparo, dado.id]
+    const params = [dado.titulo_receitas, dado.descricao, dado.requisitos, dado.preparo, dado.id, dado.id_usuario]
     try{
-        const result = await conexao.query("UPDATE receitas SET titulo=?, descricao=?, requisitos=?, preparo=? WHERE id_receitas=?;", params);    
+        const result = await conexao.query("UPDATE receitas SET titulo=?, descricao=?, requisitos=?, preparo=? WHERE id_receitas=? and id_usuario=?;", params);    
         return result[0];
     }
     catch (e){
