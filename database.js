@@ -160,6 +160,15 @@ async function selectFiltro (dado){
     }
 }
 
+/* EXEMPLO DE RETORNO DA FUNÇÃO ACIMA
+[
+    {
+        "nome": "alberto",
+        "texto": "batata"
+    }
+]
+*/
+
 async function insertCurtida (dado){
     const params = [dado.id_usuario, dado.id_receitas]
     console.log(params);
@@ -238,7 +247,7 @@ async function insertComentario (dado){
 async function selectAllComentario (id_receitas){
     const params = [id_receitas]
     try{
-        const result = await conexao.query("SELECT * from comentarios WHERE id_receitas=?;", params);
+        const result = await conexao.query("SELECT clientes.nome, comentarios.texto from comentarios, clientes WHERE comentarios.id_receitas=? and comentarios.id_usuario=clientes.id;", params);
         return result[0];
     }
     catch(e){
