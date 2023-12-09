@@ -209,13 +209,19 @@ async function countCurtida (id_receitas){
     try{
         const result = await conexao.query("SELECT COUNT(*) from curtidas WHERE id_receitas=?;", params);
         console.log(result[0])
-        return result[0];
+        return result[0][0];
     }
     catch(e){
         console.log(e)
         return;
     }
 }
+
+/* EXEMPLO DE RETORNO DA FUNÇÃO ACIMA
+{
+    "COUNT(*)": 0
+}
+*/
 
 async function insertComentario (dado){
     const params = [dado.id_usuario, dado.id_receitas, dado.texto]
@@ -241,6 +247,20 @@ async function selectAllComentario (id_receitas){
     }
 }
 
+/* EXEMPLO DE RETORNO DA FUNÇÃO ACIMA
+[
+    {
+        "id_receitas": 3,
+        "id_usuario": 2,
+        "texto": "oi"
+    },
+    {
+        "id_receitas": 3,
+        "id_usuario": 3,
+        "texto": "coloque o ovo na agua e  13 mincoloque o ovo na agua e aqueca a panela por 13 mincoloque o ovo na agua e"
+    }
+]
+*/
 
 module.exports = {
     selectUsuario,
