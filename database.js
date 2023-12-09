@@ -127,7 +127,7 @@ async function insertAvaliacao (dado){
 async function selectAvaliacao (dado){
     const params = [dado.id_receitas]
     try{
-        const result = await conexao.query("SELECT AVG(nota) from avaliacao GROUP BY id_receitas having id_receitas = ? ;", params);
+        const result = await conexao.query("SELECT AVG(nota) from avaliacao GROUP BY id_receitas having id_receitas = ?;", params);
         return result[0][0];
     }
     catch(e){
@@ -139,7 +139,7 @@ async function selectAvaliacao (dado){
 async function selectAvaliacaoUsuario (dado){
     const params = [dado.id_receitas, id_receitas]
     try{
-        const result = await conexao.query("SELECT nota from avaliacao WHERE id_receitas=? and id_usuario=? ;", params);
+        const result = await conexao.query("SELECT nota from avaliacao WHERE id_receitas=? and id_usuario=?;", params);
         return result[0][0];
     }
     catch(e){
@@ -183,7 +183,7 @@ async function insertCurtida (dado){
 async function selectCurtida (id_usuario, id_receitas){
     const params = [id_usuario, id_receitas]
     try{
-        const result = await conexao.query("SELECT * from curtidas WHERE id_usuario=? and id_receitas=?;", params);
+        const result = await conexao.query("SELECT * from receitas WHERE id_receitas IN (SELECT id_receitas from curtidas WHERE id_usuario=? and id_receitas=?);", params);
         return result[0][0];
     }
     catch(e){
@@ -195,7 +195,20 @@ async function selectCurtida (id_usuario, id_receitas){
 async function selectAllCurtida (id_usuario){
     const params = [id_usuario]
     try{
-        const result = await conexao.query("SELECT * from curtidas WHERE id_usuario=?;", params);
+        const result = await conexao.query("SELECT * from receitas WHERE id_receitas IN (SELECT id_receitas from curtidas WHERE id_usuario=?);", params);
+        return result[0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
+async function countCurtida (id_receitas){
+    const params = [id_receitas]
+    try{
+        const result = await conexao.query("SELECT COUNT(*) from curtidas WHERE id_receitas=?;", params);
+        console.log(result[0])
         return result[0];
     }
     catch(e){
@@ -228,6 +241,7 @@ async function selectAllComentario (id_receitas){
     }
 }
 
+
 module.exports = {
     selectUsuario,
     insertUsuario,
@@ -245,6 +259,7 @@ module.exports = {
     insertCurtida,
     selectCurtida,
     selectAllCurtida,
+    countCurtida,
     insertComentario,
     selectAllComentario
 }

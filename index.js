@@ -223,6 +223,19 @@ app.get("/curtida/all/read/:id_usuario", async (req, res) => {
     }    
 })
 
+app.get("/curtida/count/:id_receitas", async (req, res) => {
+    const id_receitas = req.params.id_receitas;
+    const corpo = await bd.countCurtida(id_receitas);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
 app.post("/comentario/cadastro", async (req, res) => {
     const dado = req.body;
     const corpo = await bd.insertComentario(dado);
