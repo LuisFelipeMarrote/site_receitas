@@ -15,10 +15,18 @@ async function selectUsuario (dado){
 }
 
 async function insertUsuario (dado){
-    const params = [dado.usuario, dado.email, dado.senha, dado.nome];
+    const params = [dado.email, dado.usuario, dado.senha, dado.nome];
     try{
-        const result = await conexao.query("INSERT INTO clientes (usuario, email, senha, nome) VALUES (?, ?, ?, ?);", params);    
-        return result[0];
+        const result = await conexao.query("SELECT * from clientes WHERE email=?;", dado.email); 
+        console.log("SELECT * from clientes WHERE email=?;", dado.email);
+        console.log(result[0][0])
+        if(result[0][0] == null){
+            const result2 = await conexao.query("INSERT INTO clientes (email, usuario, senha, nome) VALUES (?, ?, ?, ?);", params);        
+            return result2[0];
+        }
+        else{       
+            return null;
+        }
     }
     catch (e){
         console.log(e)
