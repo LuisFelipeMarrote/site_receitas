@@ -183,10 +183,22 @@ app.post("/avaliacao/read", async (req, res) => {
     }    
 })
 
+app.get("/avaliacao/all/read", async (req, res) => {
+    const corpo = await bd.selectAllAvaliacao();
+    console.log(corpo)
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.send(corpo).status(200);  
+    }
+    else{
+        res.set('Content-Type', 'application/json');
+        res.status(204).send();        
+    }    
+})
+
 app.post("/avaliacao/usuario/read", async (req, res) => {
     const dado = req.body;
     const corpo = await bd.selectAvaliacaoUsuario(dado);
-    console.log(corpo)
     if (corpo != null){
         res.set('Content-Type', 'application/json');
         res.send(corpo).status(200);  
@@ -201,7 +213,6 @@ app.post("/avaliacao/usuario/read", async (req, res) => {
 app.post("/filtro/read", async (req, res) => {
     const dado = req.body;
     const corpo = await bd.selectFiltro(dado);
-    console.log(corpo)
     if (corpo != null){
         res.set('Content-Type', 'application/json');
         res.send(corpo).status(200);  

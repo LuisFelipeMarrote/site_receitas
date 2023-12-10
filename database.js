@@ -173,6 +173,17 @@ async function selectAvaliacao (dado){
     }
 }
 
+async function selectAllAvaliacao (){
+    try{
+        const result = await conexao.query("SELECT AVG(nota), id_receitas from avaliacao GROUP BY id_receitas;");
+        return result[0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
 async function selectAvaliacaoUsuario (dado){
     const params = [dado.id_receitas, dado.id_usuario]
     try{
@@ -189,6 +200,7 @@ async function selectFiltro (dado){
     const params = [dado.nota]
     try{
         const result = await conexao.query("SELECT * from receitas WHERE LOWER(titulo) LIKE '%" + dado.string + "%' and id_receitas NOT IN (SELECT id_receitas from avaliacao GROUP BY id_receitas having AVG(nota) < ?);", params);
+        console.log(result[0])
         return result[0];
     }
     catch(e){
@@ -308,6 +320,7 @@ module.exports = {
     selectAllReceita,
     insertAvaliacao,
     selectAvaliacao,
+    selectAllAvaliacao,
     selectAvaliacaoUsuario,
     selectFiltro,
     insertCurtida,
