@@ -18,8 +18,6 @@ async function insertUsuario (dado){
     const params = [dado.email, dado.usuario, dado.senha, dado.nome];
     try{
         const result = await conexao.query("SELECT * from clientes WHERE email=?;", dado.email); 
-        console.log("SELECT * from clientes WHERE email=?;", dado.email);
-        console.log(result[0][0])
         if(result[0][0] == null){
             const result2 = await conexao.query("INSERT INTO clientes (email, usuario, senha, nome) VALUES (?, ?, ?, ?);", params);        
             return result2[0];
@@ -145,10 +143,17 @@ async function selectAllReceita (){
 }
 
 async function insertAvaliacao (dado){
-    const params = [dado.id_usuario, dado.id_receitas, dado.nota]
+    const params = [dado.nota, dado.id_usuario, dado.id_receitas]
     try{
-        const result = await conexao.query("INSERT INTO avaliacao (id_usuario, id_receitas, nota) VALUES (?, ?, ?);", params);   
-        return result[0];
+        const result = await conexao.query("SELECT * from avaliacao WHERE id_usuario=? and id_receitas=?;", [dado.id_usuario, dado.id_receitas]); 
+        if(result[0][0] == null){  
+            const result2 = await conexao.query("INSERT INTO avaliacao (nota, id_usuario, id_receitas) VALUES (?, ?, ?);", params);         
+            return result2[0];
+        }
+        else{       
+            const result2 = await conexao.query("UPDATE avaliacao SET nota=? WHERE id_usuario=? and id_receitas=?;", params);    
+            return result2[0];
+        }
     }
     catch(e){
         console.log(e)
