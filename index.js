@@ -36,9 +36,38 @@ app.post("/cadastro", async (req, res) => {
     }
 })
 
+app.get("/recuperarNome/:email", async (req, res) => {
+    const email = req.params.email;
+    const corpo = await bd.selectEmail(email);
+    if (corpo != null){        
+        res.set('Content-Type', 'application/json');
+        res.status(200).send(corpo);
+    }
+    else{   
+        res.set('Content-Type', 'application/json');
+        res.status(204);
+        res.send(JSON.stringify("Cadastro falhou"));
+    }
+})
+
+
 app.post("/update", async (req, res) => {
     const dado = req.body;
     const corpo = await bd.updateUsuario(dado);
+    if (corpo != null){
+        res.set('Content-Type', 'application/json');
+        res.status(200).send();
+    }
+    else{   
+        res.set('Content-Type', 'application/json');
+        res.status(204);
+        res.send(JSON.stringify("Atualização cadastral falhou"));
+    }
+})
+
+app.post("/updateSenha", async (req, res) => {
+    const dado = req.body;
+    const corpo = await bd.updateSenha(dado);
     if (corpo != null){
         res.set('Content-Type', 'application/json');
         res.status(200).send();

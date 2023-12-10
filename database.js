@@ -34,10 +34,34 @@ async function insertUsuario (dado){
     }
 }
 
+async function selectEmail (email){
+    const params = [email]
+    try{
+        const result = await conexao.query("SELECT nome from clientes WHERE email=?;", params);
+        return result[0][0];
+    }
+    catch(e){
+        console.log(e)
+        return;
+    }
+}
+
 async function updateUsuario (dado){
-    const params = [ dado.email, dado.senha, dado.nome, dado.id];
+    const params = [dado.email, dado.senha, dado.nome, dado.id];
     try{
         const result = await conexao.query("UPDATE clientes SET email=?, senha=?, nome=? WHERE id=?;", params);    
+        return result[0];
+    }
+    catch (e){
+        console.log(e)
+        return;
+    }
+}
+
+async function updateSenha (dado){
+    const params = [dado.senha, dado.email];
+    try{
+        const result = await conexao.query("UPDATE clientes SET senha=? WHERE email=?;", params);    
         return result[0];
     }
     catch (e){
@@ -59,7 +83,7 @@ async function insertReceita (dado){
 }
 
 async function updateReceita (dado){
-    const params = [dado.titulo_receitas, dado.descricao, dado.requisitos, dado.preparo, dado.id, dado.id_usuario]
+    const params = [dado.titulo_receitas, dado.descricao, dado.requisitos, dado.preparo, dado.id_receitas, dado.id_usuario]
     try{
         const result = await conexao.query("UPDATE receitas SET titulo=?, descricao=?, requisitos=?, preparo=? WHERE id_receitas=? and id_usuario=?;", params);    
         return result[0];
@@ -145,7 +169,7 @@ async function selectAvaliacao (dado){
 }
 
 async function selectAvaliacaoUsuario (dado){
-    const params = [dado.id_receitas, id_receitas]
+    const params = [dado.id_receitas, dado.id_usuario]
     try{
         const result = await conexao.query("SELECT nota from avaliacao WHERE id_receitas=? and id_usuario=?;", params);
         return result[0][0];
@@ -168,14 +192,6 @@ async function selectFiltro (dado){
     }
 }
 
-/* EXEMPLO DE RETORNO DA FUNÇÃO ACIMA
-[
-    {
-        "nome": "alberto",
-        "texto": "batata"
-    }
-]
-*/
 
 async function insertCurtida (dado){
     const params = [dado.id_usuario, dado.id_receitas]
@@ -267,14 +283,8 @@ async function selectAllComentario (id_receitas){
 /* EXEMPLO DE RETORNO DA FUNÇÃO ACIMA
 [
     {
-        "id_receitas": 3,
-        "id_usuario": 2,
-        "texto": "oi"
-    },
-    {
-        "id_receitas": 3,
-        "id_usuario": 3,
-        "texto": "coloque o ovo na agua e  13 mincoloque o ovo na agua e aqueca a panela por 13 mincoloque o ovo na agua e"
+        "nome": "alberto",
+        "texto": "batata"
     }
 ]
 */
@@ -282,7 +292,9 @@ async function selectAllComentario (id_receitas){
 module.exports = {
     selectUsuario,
     insertUsuario,
+    selectEmail,
     updateUsuario,
+    updateSenha,
     insertReceita,
     updateReceita,
     selectReceita,
