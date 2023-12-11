@@ -164,7 +164,7 @@ async function insertAvaliacao (dado){
 async function selectAvaliacao (dado){
     const params = [dado.id_receitas]
     try{
-        const result = await conexao.query("SELECT AVG(nota) from avaliacao GROUP BY id_receitas having id_receitas = ?;", params);
+        const result = await conexao.query("SELECT ROUND(AVG(nota)) AS average_nota from avaliacao GROUP BY id_receitas having id_receitas = ?;", params);
         return result[0][0];
     }
     catch(e){
@@ -199,7 +199,7 @@ async function selectAvaliacaoUsuario (dado){
 async function selectFiltro (dado){
     const params = [dado.nota]
     try{
-        const result = await conexao.query("SELECT * from receitas WHERE LOWER(titulo) LIKE '%" + dado.string + "%' and id_receitas NOT IN (SELECT id_receitas from avaliacao GROUP BY id_receitas having CEIL(AVG(nota)) < ?);", params);
+        const result = await conexao.query("SELECT * from receitas WHERE LOWER(titulo) LIKE '%" + dado.string + "%' and id_receitas NOT IN (SELECT id_receitas from avaliacao GROUP BY id_receitas having ROUND(AVG(nota)) < ?);", params);
         console.log(result[0])
         return result[0];
     }
