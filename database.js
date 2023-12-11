@@ -199,7 +199,7 @@ async function selectAvaliacaoUsuario (dado){
 async function selectFiltro (dado){
     const params = [dado.nota]
     try{
-        const result = await conexao.query("SELECT * from receitas WHERE LOWER(titulo) LIKE '%" + dado.string + "%' and id_receitas NOT IN (SELECT id_receitas from avaliacao GROUP BY id_receitas having AVG(nota) < ?);", params);
+        const result = await conexao.query("SELECT * from receitas WHERE LOWER(titulo) LIKE '%" + dado.string + "%' and id_receitas NOT IN (SELECT id_receitas from avaliacao GROUP BY id_receitas having CEIL(AVG(nota)) < ?);", params);
         console.log(result[0])
         return result[0];
     }
