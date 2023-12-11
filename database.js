@@ -175,7 +175,7 @@ async function selectAvaliacao (dado){
 
 async function selectAllAvaliacao (){
     try{
-        const result = await conexao.query("SELECT AVG(nota), id_receitas from avaliacao GROUP BY id_receitas;");
+        const result = await conexao.query("SELECT ROUND(AVG(nota)) AS average_nota, id_receitas from avaliacao GROUP BY id_receitas;");
         return result[0];
     }
     catch(e){
