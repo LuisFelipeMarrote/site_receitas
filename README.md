@@ -1,9 +1,9 @@
-This is the backend of a recipes website, the framework implemented was Nodejs. 
-
-I also used some extesions as:
-express ->  Created the app so I could created a route. 
-cors -> Helped the linkage from the front-end to back-end in a safer way. 
+Some importante packages used were:
+express ->  Created the abstraction for routing. 
+cors -> Helped the linkage from the front-end to back-end in a safer manner. 
 mysql -> Allowed the back-end code connect to a local mysql workbench.  
 
 Here a link in case you don't have Nodejs in your computer: https://nodejs.org/en/download
-The extesions are already inside the project so there is no need in downloading them.
+The packages are already inside the project so there is no need in downloading them.
+
+In order to run, it's very simple, open the terminal inside the folder of the project, where the index.js is located. Next, write "npm run build" if it's your first time running the applicantion, then "npm run start".
